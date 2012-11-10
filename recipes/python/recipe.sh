@@ -34,6 +34,9 @@ function prebuild_python() {
 	try patch -p1 < $RECIPE_python/patches/fix-semaphore.patch
 	try patch -p1 < $RECIPE_python/patches/fix-semaphore-test.patch
 
+	# for debug
+	try patch -p1 < $RECIPE_python/patches/no-optim.patch
+
 	system=$(uname -s)
 	if [ "X$system" == "XDarwin" ]; then
 		try patch -p1 < $RECIPE_python/patches/fix-configure-darwin.patch
@@ -73,6 +76,9 @@ function build_python() {
 		export CFLAGS="$CFLAGS -I$BUILD_sqlite3"
 		export LDFLAGS="$LDFLAGS -L$SRC_PATH/obj/local/$ARCH/"
 	fi
+
+	# ok, it's a bit ugly
+	sed 's/-O3/-O0/' -i $BUILD_python/Python-2.7.3/configure
 
 	try ./configure --host=arm-eabi --prefix="$BUILD_PATH/python-install" --enable-shared --disable-toolbox-glue --disable-framework
 	echo ./configure --host=arm-eabi --prefix="$BUILD_PATH/python-install" --enable-shared --disable-toolbox-glue --disable-framework
