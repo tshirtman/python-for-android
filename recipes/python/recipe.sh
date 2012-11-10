@@ -78,7 +78,7 @@ function build_python() {
 	fi
 
 	# ok, it's a bit ugly
-	sed 's/-O3/-O0/' -i $BUILD_python/Python-2.7.2/configure
+	sed 's/-O3/-O0/' -i configure
 
 	try ./configure --host=arm-eabi --prefix="$BUILD_PATH/python-install" --enable-shared --disable-toolbox-glue --disable-framework
 	echo ./configure --host=arm-eabi --prefix="$BUILD_PATH/python-install" --enable-shared --disable-toolbox-glue --disable-framework
